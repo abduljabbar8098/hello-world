@@ -1,0 +1,21 @@
+/*
+* TriggerName: DMS_Lead
+* CreatedBy: Ritika_Salesforce
+* Description: Trigger Converts the Lead into Account and Contact upon Approval
+---------------------------------------
+* Revision History
+* 10 Sep 2015 – Initial Creation.
+*/
+trigger DMS_Lead on Lead (after update) {
+
+    if(trigger.isAfter){
+
+    	if(trigger.isUpdate){
+
+    		DMS_LeadUtils.performLeadConversion(trigger.newMap, trigger.oldMap);
+
+    	}
+
+	}
+
+}
