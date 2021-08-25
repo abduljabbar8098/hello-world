@@ -1,0 +1,292 @@
+How can i tell to Ram anna?
+ok anna.i will talk to ram anna....i couldn't solve that,becoz of its too difficuilt of as my knowledge,anyway i need more to learn about this.
+
+Batchable Apex:
+
+If it is a long-running complex process then you should go for Batchable Apex and you can have an option to schedule the batch to run at a customized time.
+It can process up to 50 million records in asynchronous mode.
+5 concurrent jobs are allowed to run at a time and future methods are not allowed in Batch class.
+Batch Class should implement Database.Batchable interface and it should have three methods start(), execute() and finish() methods.
+
+Queueable Apex:
+
+It comes in handy, when you need to have both the operations of Batch and future method and it should implement Queueable Interface.
+If one job is dependent on other job means here we can chain the dependent job in execute method by system.enqueuejob(new secondJob());
+You can also able to chain upto 50 jobs and in developer edition you can able to chain up to 5 jobs only.
+It will accept non-primitive types like sObjects and it also runs in asynchronous mode.
+In this Queueable apex you can get Job Id to monitor the job progress.
+
+EXAMPLE:
+
+1. NORMAL QUEUABLE METHOD ;
+
+public class FirstQueuableJobs implements Queueable {
+    
+    public void execute(QueueableContext context) {
+        Account acc = new Account(Name='RamyaPandian');
+        Insert acc;        
+    }
+}
+
+2. JOB ID: 
+
+String jobId = System.enqueueJob(new FirstQueuableJobs());
+system.debug('firstQueueable Job :'+jobId);
+
+3. CHAINING JOBS:
+
+public class FirstQueuableJobs implements Queueable {
+    
+    public void execute(QueueableContext context) {
+        Account acc = new Account(Name='RamyaPandian1');
+        Insert acc; 
+        system.enqueueJob(new secondQueueableJobs());
+    }
+}
+
+
+
+public class secondQueueableJobs implements Queueable {
+    public void execute(QueueableContext context) {
+        Contact acc = new Contact(LastName='RamyaPandianContact');
+        Insert acc;
+        system.enqueueJob(new thirdQueueableJobs());        
+    }
+
+}
+
+public class thirdQueueableJobs implements Queueable {
+   public void execute(QueueableContext context) {
+        Case cs = new Case(Subject='Testing pandiyan');
+        Insert cs;       
+    }
+}
+
+4.NON PRIMITIVE DATA TYPES:
+
+SOBJECTS AND CUSTOM OBJECTS:
+
+trigger AccountTriggerForContacts on Account (before insert) {
+    if(Trigger.isAfter && Trigger.isInsert){
+      System.enqueueJob(new secondQueueableJobs(Trigger.New));
+    }
+}
+
+public class secondQueueableJobs implements Queueable {
+  
+    Public List<Account> lstAcc;
+    public secondQueueableJobs(List<Account> lstAccount){
+        this.lstAcc = lstAccount;   
+    }
+    public void execute(QueueableContext context) {
+        List<Contact> lstCon = new List<Contact>();
+        for(Account acc : lstAcc){
+           Contact con = new Contact(LastName=acc.Name,AccountId = acc.Id); 
+            lstCon.add(con);
+        }
+        if(lstCon.size()>0){
+          Insert lstCon;
+        }
+        system.enqueueJob(new thirdQueueableJobs());        
+    }
+
+}
+
+friday:
+UAT testing nominations
+
+Hong Kong
+josephine.sy.tse@jci.com
+
+Malasyia
+daniel.heng@jci.com
+
+Malasyia
+kheng.loong.lam@jci.com
+
+Singapore
+wilson.chua@jci.com
+
+Singapore
+jackson.sin83@gmail.com
+
+Australia
+chandra.doredla@jci.com
+
+Australia
+chris.probyn@jci.com
+
+China
+yuting.xu@jci.com
+
+
+QUERy ;
+
+Select id,name,username,email,Profile.name,Isactive from user where email like 'josephine.sy.tse@jci.com%' OR email like 'daniel.heng@jci.com%' OR email like 'kheng.loong.lam@jci.com%' OR email like 'wilson.chua@jci.com%' OR email like 'jackson.sin83@gmail.com%' OR email like 'chandra.doredla@jci.com%' OR email like 'chris.probyn@jci.com%' OR email like 'yuting.xu@jci.com%'
+
+
+ 	Id	Name	Username	Email
+1	0050w000002ljvWAAQ	Chandra Doredla	chandra.doredla@jci.com.testing	chandra.doredla@jci.com
+2	00590000002J0CUAA0	Chris Probyn	chris.probyn@jci.com.testing	chris.probyn@jci.com.invalid
+3	00590000004t6tDAAQ	Fu Yin Daniel Heng	daniel.heng@jci.com.testing	daniel.heng@jci.com.invalid
+4	00590000005mzRzAAI	Sin Ying Tse	josephine.sy.tse@jci.com.testing	josephine.sy.tse@jci.com.invalid
+5	0052j000000pd1jAAA	Kheng Loong Lam	kheng.loong.lam@jci.com.testing	kheng.loong.lam@jci.com.invalid
+6	0050o00000XgCiqAAF	Yuting Xu	yuting.xu@jci.com.testing	yuting.xu@jci.com.invalid
+
+USER1: chandra.doredla@jci.com.testing
+Profile 1 : ~ SMX AU Sales Person & Service Manager Profile
+
+
+OBJECT LEVEL:(No access)
+
+ENtitlement master 
+Lead priorization confiq 
+
+CONTROLLER:(Not given permission:)
+
+Leadhandler_Sales
+Installedproductleadconversionbatch
+
+FIELD LEVEL:(No access)
+
+LeadPriorization object fields:
+
+Condition		
+Country			
+Data Type		
+Depends With		
+Installed Product Field				
+Lead Field				
+Operator		
+Order				
+Question		
+Region		
+Values
+
+Entitlement Master :
+
+Country			
+Entitlement Category			
+Entitlement Price				
+LOB		
+Metasys Version		
+MS_Y1		
+MS_Y10		
+MS_Y11		
+MS_Y12		
+MS_Y13		
+MS_Y14		
+MS_Y15		
+MS_Y16		
+MS_Y17		
+MS_Y18		
+MS_Y19		
+MS_Y2		
+MS_Y20		
+MS_Y21		
+MS_Y22		
+MS_Y23		
+MS_Y24		
+MS_Y25		
+MS_Y3		
+MS_Y4		
+MS_Y5		
+MS_Y6		
+MS_Y7		
+MS_Y8		
+MS_Y9		
+Number of Objects - BMS				
+Product Family		
+Region
+-------------------------------------------------------
+USER 2: chris.probyn@jci.com.testing
+Profile 2: ~ SMX AU Sales Person & Service Manager Profile
+OBJECT LEVEL:(No access)
+
+ENtitlement master 
+Lead priorization confiq 
+
+CONTROLLER:(Not given permission:)
+
+Leadhandler_Sales
+Installedproductleadconversionbatch
+
+FIELD LEVEL:(No access)
+
+LeadPriorization object fields:
+
+Condition		
+Country			
+Data Type		
+Depends With		
+Installed Product Field				
+Lead Field				
+Operator		
+Order				
+Question		
+Region		
+Values
+
+Entitlement Master :
+
+Country			
+Entitlement Category			
+Entitlement Price				
+LOB		
+Metasys Version		
+MS_Y1		
+MS_Y10		
+MS_Y11		
+MS_Y12		
+MS_Y13		
+MS_Y14		
+MS_Y15		
+MS_Y16		
+MS_Y17		
+MS_Y18		
+MS_Y19		
+MS_Y2		
+MS_Y20		
+MS_Y21		
+MS_Y22		
+MS_Y23		
+MS_Y24		
+MS_Y25		
+MS_Y3		
+MS_Y4		
+MS_Y5		
+MS_Y6		
+MS_Y7		
+MS_Y8		
+MS_Y9		
+Number of Objects - BMS				
+Product Family		
+Region
+
+USER 3: daniel.heng@jci.com.testing 
+Profile 3: 	~ SMX MY FSM SAM&Sales Manager Profile
+
+USER 4: josephine.sy.tse@jci.com.testing
+Profile 4: 	~ SMX HK SOM-STM-Admin & Sales Person Profile
+
+USER 5: kheng.loong.lam@jci.com.testing	
+Profile 5: 	~ SMX MY-LN FSM-SDM-Admin Profile
+
+USER 6: yuting.xu@jci.com.testing
+Profile 6: ~ SMX CN Sales&Service - Admin Profile
+
+USER 7: wilson.chua@jci.com.testing
+Profile 7: 	~ SMX SIN SOM-STM-Admin & Sales Person Profile
+
+USER 8: jackson.sin@jci.com.testing
+Profile 8: ~ SMX SIN SOM-STM-Admin & Sales Person Profile
+
+
+
+
+
+
+
+
+
+
